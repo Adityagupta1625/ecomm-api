@@ -11,15 +11,6 @@ export const createProductCategory = async (ProductCategory: ProductCategory) =>
         if(!ProductCategory?.name) 
             throw new HttpException(400, 'Product Category name is required');
         
-        prisma.productCategory.findUnique({
-            where: {
-                name: ProductCategory?.name.toLowerCase()
-            }
-        }).then((productCategory:any) => {
-            if(productCategory)
-                throw new HttpException(400, 'Product Category already exists');
-        })
-
         const productCategory = await prisma.productCategory.create({
             data: {
                 id: uuid.v4(),
@@ -40,11 +31,7 @@ export const updateProductCategory = async (ProductCategory: ProductCategory) =>
         if(!ProductCategory?.id) 
             throw new HttpException(400, 'Product Category ID is required');
         
-        let productCategoryDetail= await prisma.productCategory.findUnique({
-            where: {
-                id: ProductCategory?.id
-            }
-        });
+        let productCategoryDetail= await getProductCategorybyId(ProductCategory?.id);
 
         if(!productCategoryDetail)
             throw new HttpException(400, 'Product Category does not exist');
@@ -71,21 +58,17 @@ export const deleteProductCategory = async (id: string) => {
         if(!id) 
             throw new HttpException(400, 'Product Category ID is required');
         
-        let productCategoryDetail= await prisma.productCategory.findUnique({
-            where: {
-                id: id
-            }
-        });
+        let productCategoryDetail= await getProductCategorybyId(id);
 
         if(!productCategoryDetail)
             throw new HttpException(400, 'Product Category does not exist');
 
-        const productCategory = await prisma.productCategory.delete({
+        await prisma.productCategory.delete({
             where: {
                 id: id
             }
         });
-        return productCategory;
+        
     }
     catch(err:any){
         throw new HttpException(500, err?.message);
@@ -97,16 +80,13 @@ export const getProductCategorybyId = async (id: string) => {
         if(!id) 
             throw new HttpException(400, 'Product Category ID is required');
         
-        let productCategoryDetail= await prisma.productCategory.findUnique({
+        let productCategory= await prisma.productCategory.findUnique({
             where: {
                 id: id
             }
         });
 
-        if(!productCategoryDetail)
-            throw new HttpException(400, 'Product Category does not exist');
-
-        return productCategoryDetail;
+        return productCategory;
     }
     catch(err:any){
         throw new HttpException(500, err?.message);
@@ -118,16 +98,13 @@ export const getProductCategorybyName = async (name: string) => {
         if(!name) 
             throw new HttpException(400, 'Product Category name is required');
         
-        let productCategoryDetail= await prisma.productCategory.findUnique({
+        let productCategory= await prisma.productCategory.findUnique({
             where: {
                 name: name
             }
         });
 
-        if(!productCategoryDetail)
-            throw new HttpException(400, 'Product Category does not exist');
-
-        return productCategoryDetail;
+        return productCategory;
     }
     catch(err:any){
         throw new HttpException(500, err?.message);
@@ -137,9 +114,6 @@ export const getProductCategorybyName = async (name: string) => {
 export const getProductCategoryAll = async () => {
     try{
         let productCategoryDetail= await prisma.productCategory.findMany();
-        
-        if(!productCategoryDetail)
-            throw new HttpException(400, 'Product Category does not exist');
         return productCategoryDetail;
     }
     catch(err:any){

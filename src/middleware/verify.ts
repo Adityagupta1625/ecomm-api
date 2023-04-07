@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
+import firebase from '../config/firebase';
 
 const verifyToken = (req:Request, res:Response, next:NextFunction) => {
     let token:any = req.headers["x-access-token"];
@@ -10,14 +10,14 @@ const verifyToken = (req:Request, res:Response, next:NextFunction) => {
         });
     }
     
-    jwt.verify(token, process.env.SECRET || "", (err:any, decoded:any) => {
-        if (err) {
-            return res.status(401).send({
-                message: "Unauthorized!"
-            });
-        }
-        
+    firebase.auth().verifySessionCookie(token, true).then((decodedClaims) => {
+        req.body.userid = decodedClaims.uid;
         next();
+
+    }).catch((error) => {
+        return res.status(401).send({
+            message: "Unauthorized!"
+        });
     });
 }
 

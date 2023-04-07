@@ -1,144 +1,129 @@
-import prisma from '../../prisma/client';
-import HttpException from '../models/http-exception';
-import UserAddress from '../models/UserAddress';
-import uuid from 'uuid';
+import prisma from "../../prisma/client";
+import HttpException from "../models/http-exception";
+import UserAddress from "../models/UserAddress";
+import uuid from "uuid";
 
 export const createUserAddress = async (UserAddress: UserAddress) => {
-    try{
-        if(!UserAddress?.userId) 
-            throw new HttpException(400, 'User ID is required');
-        
-        if(!UserAddress?.address_line1 || !UserAddress?.city || !UserAddress?.state || !UserAddress?.country || !UserAddress?.pincode || !UserAddress?.mobile){
-            throw new HttpException(400, 'Incomplete Details');
-        }
+  try {
+    if (!UserAddress?.userId)
+      throw new HttpException(400, "User ID is required");
 
-        
-        const userAddress = await prisma.userAddress.create({
-            data: {
-                id:uuid.v4(),
-                userId: UserAddress?.userId,
-                address_line1: UserAddress?.address_line1,
-                address_line2: UserAddress?.address_line2 || "",
-                city: UserAddress?.city,
-                state: UserAddress?.state,
-                country: UserAddress?.country,
-                pincode: UserAddress?.pincode,
-                mobile: UserAddress?.mobile,
-                telephone: UserAddress?.telephone || "",
-                updatedAt: new Date(),
-            }
-        });
-        return userAddress;
+    if (
+      !UserAddress?.address_line1 ||
+      !UserAddress?.city ||
+      !UserAddress?.state ||
+      !UserAddress?.country ||
+      !UserAddress?.pincode ||
+      !UserAddress?.mobile
+    ) {
+      throw new HttpException(400, "Incomplete Details");
     }
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
-}
 
-export const updateUserAddress = async (UserAddress:UserAddress) => {
-    try{
-        if(UserAddress?.id)
-            throw new HttpException(400, 'User Address ID is required');
-        
-        let userAddress= await prisma.userAddress.findUnique({
-            where: {
-                id: UserAddress?.id
-            }
-        });
 
-        if(!userAddress)
-            throw new HttpException(400, 'User Address does not exist');
+    const userAddress = await prisma.userAddress.create({
+      data: {
+        id: uuid.v4(),
+        userId: UserAddress?.userId,
+        address_line1: UserAddress?.address_line1,
+        address_line2: UserAddress?.address_line2 || "",
+        city: UserAddress?.city,
+        state: UserAddress?.state,
+        country: UserAddress?.country,
+        pincode: UserAddress?.pincode,
+        mobile: UserAddress?.mobile,
+        telephone: UserAddress?.telephone || "",
+        updatedAt: new Date(),
+      },
+    });
+    return userAddress;
+  } catch (err: any) {
+    throw new HttpException(500, err?.message);
+  }
+};
 
-        const updatedUserAddress = await prisma.userAddress.update({
-            where: {
-                id: UserAddress?.id
-            },
-            data: {
-                address_line1: UserAddress?.address_line1 || userAddress?.address_line1,
-                address_line2: UserAddress?.address_line2 || userAddress?.address_line2 ,
-                city: UserAddress?.city || userAddress?.city,
-                state: UserAddress?.state || userAddress?.state,
-                country: UserAddress?.country || userAddress?.country,
-                pincode: UserAddress?.pincode || userAddress?.pincode,
-                mobile: UserAddress?.mobile || userAddress?.mobile,
-                telephone: UserAddress?.telephone || userAddress?.telephone,
-                updatedAt: new Date(),
-            }
-        });
+export const updateUserAddress = async (UserAddress: UserAddress) => {
+  try {
+    if (UserAddress?.id)
+      throw new HttpException(400, "User Address ID is required");
 
-        return updatedUserAddress;
+    let userAddress = await getUserAddressbyId(UserAddress?.id);
 
-    }   
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
-}
+    if (!userAddress)
+      throw new HttpException(400, "User Address does not exist");
 
-export const deleteUserAddress = async (id:string) => {
-    try{
-        if(!id)
-            throw new HttpException(400, 'User Address ID is required');
+    const updatedUserAddress = await prisma.userAddress.update({
+      where: {
+        id: UserAddress?.id,
+      },
+      data: {
+        address_line1: UserAddress?.address_line1 || userAddress?.address_line1,
+        address_line2: UserAddress?.address_line2 || userAddress?.address_line2,
+        city: UserAddress?.city || userAddress?.city,
+        state: UserAddress?.state || userAddress?.state,
+        country: UserAddress?.country || userAddress?.country,
+        pincode: UserAddress?.pincode || userAddress?.pincode,
+        mobile: UserAddress?.mobile || userAddress?.mobile,
+        telephone: UserAddress?.telephone || userAddress?.telephone,
+        updatedAt: new Date(),
+      },
+    });
 
-        let userAddress= await prisma.userAddress.findUnique({
-            where: {
-                id: id
-            }
-        });
+    return updatedUserAddress;
+  } catch (err: any) {
+    throw new HttpException(500, err?.message);
+  }
+};
 
-        if(!userAddress)
-            throw new HttpException(400, 'User Address does not exist');
+export const deleteUserAddress = async (id: string) => {
+  try {
+    if (!id) throw new HttpException(400, "User Address ID is required");
 
-        await prisma.userAddress.delete({
-            where: {
-                id: id
-            }
-        });
+    let userAddress = await getUserAddressbyId(id);
 
-        return true;
-    }   
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
-}
+    if (!userAddress)
+      throw new HttpException(400, "User Address does not exist");
 
-export const getUserAddressbyId = async (id:string) => {
-    try{
-        if(!id)
-            throw new HttpException(400, 'User Address ID is required');
+    await prisma.userAddress.delete({
+      where: {
+        id: id,
+      },
+    });
 
-        let userAddress= await prisma.userAddress.findUnique({
-            where: {
-                id: id
-            }
-        });
+    return true;
+  } catch (err: any) {
+    throw new HttpException(500, err?.message);
+  }
+};
 
-        if(!userAddress)
-            throw new HttpException(400, 'User Address does not exist');
+export const getUserAddressbyId = async (id: string) => {
+  try {
+    if (!id) throw new HttpException(400, "User Address ID is required");
 
-        return userAddress;
-    }   
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
-}
+    let userAddress = await prisma.userAddress.findUnique({
+      where: {
+        id: id,
+      },
+    });
 
-export const getUserAddressbyUserId = async (userId:string) => {
-    try{
-        if(!userId)
-            throw new HttpException(400, 'User ID is required');
+    return userAddress;
+  } catch (err: any) {
+    throw new HttpException(500, err?.message);
+  }
+};
 
-        let userAddress= await prisma.userAddress.findMany({
-            where: {
-                userId: userId
-            }
-        });
+export const getUserAddressbyUserId = async (userId: string) => {
+  try {
+    if (!userId) throw new HttpException(400, "User ID is required");
 
-        if(!userAddress)
-            throw new HttpException(400, 'User Address does not exist');
+    let userAddress = await prisma.userAddress.findMany({
+      where: {
+        userId: userId,
+      },
+    });
 
-        return userAddress;
-    }   
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
-}
+
+    return userAddress;
+  } catch (err: any) {
+    throw new HttpException(500, err?.message);
+  }
+};

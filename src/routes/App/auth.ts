@@ -1,46 +1,58 @@
-import express, { NextFunction, Request, Response } from 'express';
-import {createUser,getUser} from '../../crud/User';
-import User from '../../models/User';
-import HttpException from '../../models/http-exception';
-import jwt from 'jsonwebtoken';
+import express, { Request, Response } from "express";
+import { createUser, getUser } from "../../crud/User";
+import HttpException from "../../models/http-exception";
+import firebase from "../../config/firebase";
+import { createCart } from "../../crud/Cart";
+const router = express.Router();
 
-const app=express();
-const router=express.Router();
+router.post("/register-login", (req: Request, res: Response) => {
+  try {
+    let id = req.body?.id;
 
-function createToken(id:string){
-    var token = jwt.sign({ id:id }, process.env.SECRET_TOKEN || "");
-    return token;
-}
+    const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
-router.post('/signup', (req:Request, res:Response) => {
-    try{
-        let user:User = req.body;
-        createUser(user).then((user:any) => {
-            if(user){
-                const token = createToken(user.id);
-                res.cookie('token', token, { httpOnly: true });
-                res.status(200).json(user);
-            } 
-        });
-    }
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
+    firebase
+      .auth()
+      .createSessionCookie(id, { expiresIn })
+      .then((sessionCookie) => {
+        // Set cookie policy for session cookie.
+        const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+        firebase
+          .auth()
+          .verifyIdToken(id)
+          .then(async (decodedClaims) => {
+            if (!decodedClaims)
+              throw new HttpException(500, "Error while decoding claims");
+
+            const user: any = await getUser(decodedClaims?.uid);
+            if (user) return res.status(400).send("User already exists");
+
+            createUser({
+              id: decodedClaims?.uid,
+              name: decodedClaims?.name,
+              email: decodedClaims?.email,
+              email_verified: decodedClaims?.email_verified,
+            });
+            
+            createCart({
+              userId: decodedClaims?.uid,
+              total: 0,
+              id:"",
+              updatedAt:new Date()
+            });
+
+            res.cookie("session", sessionCookie, options);
+            res.status(200).send(decodedClaims?.uid);
+            console.log(decodedClaims);
+          })
+          .catch((error) => {
+            res.status(401).send("UNAUTHORIZED REQUEST!");
+          });
+      })
+      .catch((error) => {
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+      });
+  } catch (err: any) {
+    res.status(err?.status || 500).json({message:"Error while creating session cookie"});
+  }
 });
-
-router.post('/login', (req:Request, res:Response) => {
-    try{
-        let id:string=req.body?.id;
-        getUser(id).then((user:any) => {
-            if(user){
-                const token = createToken(user.id);
-                res.cookie('token', token, { httpOnly: true });
-                res.status(200).json(user);
-            } 
-        });
-    }
-    catch(err:any){
-        throw new HttpException(500, err?.message);
-    }
-});
-

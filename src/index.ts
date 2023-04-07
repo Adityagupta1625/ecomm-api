@@ -1,5 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
+import openapiSpecification from './config/docs';
 
 const app = express();
 
@@ -15,14 +18,8 @@ app.use('/app', require('./routes/App').default);
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// app.get('/api-docs', (req: Request, res: Response) => {
-//   res.json({
-//     swagger:
-//       'the API documentation  is now available on https://realworld-temp-api.herokuapp.com/api',
-//   });
-// });
 
-// /* eslint-disable */
+
 // app.use((err: Error | HttpException, req: Request, res: Response, next: NextFunction) => {
 //   // @ts-ignore
 //   if (err && err.errorCode) {
@@ -33,9 +30,6 @@ app.use('/app', require('./routes/App').default);
 //   }
 // });
 
-/**
- * Server activation
- */
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

@@ -1,51 +1,45 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express, {Request, Response } from 'express';
 import {getUser,updateUser,deleteUser} from '../../crud/User';
 import verifyToken from '../../middleware/verify';
-import HttpException from '../../models/http-exception';
 
-const app=express();
 const router=express.Router();
 
+
 router.use(verifyToken);
-router.get('/', (req:Request, res:Response) => {
+router.get('/', async (req:Request, res:Response) => {
     try{
         let id:string=req.body?.id;
-        getUser(id).then((user:any) => {
-            if(user){
-                res.status(200).json(user);
-            } 
-        });
+        const user=await getUser(id);
+        if(!user) return res.status(400).send('User does not exists');
+
+        else return res.status(200).json(user);
     }
     catch(err:any){
-        throw new HttpException(500, err?.message);
+        res.status(err?.status || 500).json({message:"Error while fetching user"});
     }
 });
 
-router.put('/', (req:Request, res:Response) => {
+router.put('/', async(req:Request, res:Response) => {
     try{
         let user:any=req.body;
-        updateUser(user).then((user:any) => {
-            if(user){
-                res.status(200).json(user);
-            } 
-        });
+        let updatedUser:any=await updateUser(user);
+
+        return res.status(200).json(updatedUser);
     }
     catch(err:any){
-        throw new HttpException(500, err?.message);
+        res.status(err?.status || 500).json({message:"Error while updating user"});
     }
 });
 
-router.delete('/', (req:Request, res:Response) => {
+router.delete('/', async (req:Request, res:Response) => {
     try{
         let id:string=req.body?.id;
-        deleteUser(id).then((user:any) => {
-            if(user){
-                res.status(200).json(user);
-            } 
-        });
+        await deleteUser(id);
+        return res.sendStatus(200);
     }
-    catch(err:any){
-        throw new HttpException(500, err?.message);
+    catch(err:any){ 
+        res.status(err?.status || 500).json({message:"Error while deleting user"});
     }
-    
 });
+
+export default router;

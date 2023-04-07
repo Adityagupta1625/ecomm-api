@@ -2,7 +2,7 @@
 export default interface User{
     id: string;
     name: string;
-    email: string;
-    email_verified: boolean;
+    email: string | undefined;
+    email_verified: boolean | undefined;
 
 }

@@ -1,9 +1,38 @@
 import express, { Request, Response } from "express";
-import { createUser, getUser } from "../../crud/User";
-import HttpException from "../../models/http-exception";
-import firebase from "../../config/firebase";
-import { createCart } from "../../crud/Cart";
+import { createUser, getUser } from "../../../crud/User";
+import HttpException from "../../../models/http-exception";
+import firebase from "../../../config/firebase";
+import { createCart } from "../../../crud/Cart";
 const router = express.Router();
+
+
+/**
+ * @swagger
+ * /app/notsignedIn/Auth/register-login:
+ *   post:
+ *     summary: register and login user
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *     responses:
+ *       200:
+ *         description: Return the uid of the user that was created or logged in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                id:
+ *                  type: string
+ *                  description: The uid of the user          
+ *              
+ */
 
 router.post("/register-login", (req: Request, res: Response) => {
   try {
@@ -56,3 +85,5 @@ router.post("/register-login", (req: Request, res: Response) => {
     res.status(err?.status || 500).json({message:"Error while creating session cookie"});
   }
 });
+
+export default router;

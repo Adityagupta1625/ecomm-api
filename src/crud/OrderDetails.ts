@@ -9,15 +9,12 @@ export const createOrderDetails = async (OrderDetails: OrderDetails) => {
         if(!OrderDetails?.userId) 
             throw new HttpException(400, 'User id is required');
         
-        if(!OrderDetails?.paymentId)
-            throw new HttpException(400, 'Payment id is required');
-        
         const orderDetails = await prisma.orderDetails.create({
             data: {
                 id: uuid.v4(),
                 userId: OrderDetails?.userId,
                 total: OrderDetails?.total || 0,
-                paymentId: OrderDetails?.paymentId,
+                paymentId: OrderDetails?.paymentId || "",
                 status: OrderDetails?.status || "pending",
                 updatedAt: new Date(),
             }

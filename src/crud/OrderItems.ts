@@ -14,6 +14,7 @@ export const createOrderItems = async (OrderItems: OrderItems) => {
             throw new HttpException(400, 'Product id is required');
         
         const product = await getProductbyId(OrderItems?.productId);
+        let price: number = product?.price || 0;
 
         const orderItems = await prisma.orderItems.create({
             data: {
@@ -21,7 +22,7 @@ export const createOrderItems = async (OrderItems: OrderItems) => {
                 orderId: OrderItems?.orderId,
                 productId: OrderItems?.productId,
                 quantity: OrderItems?.quantity || 1,
-                price: OrderItems?.quantity? product?.price * OrderItems?.quantity : product?.price,
+                price: OrderItems?.quantity? price * OrderItems?.quantity : price,
                 updatedAt: new Date(),
             }
         });
@@ -98,10 +99,12 @@ export const updateOrderItems = async (OrderItems: OrderItems) => {
         
         const orderItemsdetails = await getOrderItemsbyId(OrderItems?.id);
 
-        let price: any = 0;
-
-        if(OrderItems?.quantity)
-            price= (orderItemsdetails?.price/ (orderItemsdetails?.quantity || 1)) * OrderItems?.quantity;
+        let price: number = orderItemsdetails?.price || 0;
+        
+        if(OrderItems?.quantity){
+            let qty: number = orderItemsdetails?.quantity || 1;
+            price= price * qty;
+        }
 
         const orderItems = await prisma.orderItems.update({
             where: {

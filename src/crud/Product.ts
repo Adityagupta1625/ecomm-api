@@ -42,6 +42,7 @@ export const getProducts = async () => {
                 discount: true,
             }
         });
+        
         return products;
     }
     catch(err:any){

@@ -14,7 +14,8 @@ export const createCartItem = async (CartItem: CartItem) => {
     const product = await getProductbyId(CartItem?.productId);
 
     let quantity: number = CartItem?.quantity || 1;
-    let price: any = product?.price * quantity || 0;
+    
+    let price: any = product?.price?product?.price* quantity:0;
 
     const cartItem = await prisma.cartItem.create({
       data: {
@@ -69,7 +70,7 @@ export const updateCartItem = async (CartItem: CartItem) => {
     const product = await getProductbyId(cartItem?.productId);
 
     let quantity: number = CartItem?.quantity || cartItem?.quantity;
-    let price: any = product?.price * quantity || 0;
+    let price: any = product?.price?product?.price* quantity:0;
 
     const updatedCartItem = await prisma.cartItem.update({
       where: {

@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "tsc",
-    "test": "jest -i",
+  
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts dev",
     "start": "node dist/src/index.js",
     "prisma:migrate": "prisma migrate dev --skip-seed",
@@ -14,11 +13,8 @@
     "prisma:generate:watch": "prisma generate --watch",
     "prisma:seed": "prisma db seed --preview-feature",
     "prisma:studio": "prisma studio",
-    "prisma:reset": "prisma migrate reset",
-    "prettier:write": "npx prettier --write .",
-    "prettier:check": "npx prettier --check .",
-    "lint:check": "npx eslint src/**/*.ts",
-    "lint:fix": "npx eslint --fix src/**/*.ts"
+    "prisma:reset": "prisma migrate reset"
+    
   },
   "keywords": [],
   "author": "",

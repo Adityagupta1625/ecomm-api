@@ -1,5 +1,5 @@
 # savishi-ecomm-api
-This is the phase 1 of the Ecomm-Api it is still under development.
+This is the phase 1 of the Ecomm-App it is still under development.
 - Docs can be found out here: https://savishi-api.onrender.com/api-docs
 - Live Link: https://savishi-api.onrender.com
 

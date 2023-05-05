@@ -80,12 +80,11 @@ export const getProductCategorybyId = async (id: string) => {
         if(!id) 
             throw new HttpException(400, 'Product Category ID is required');
         
-        let productCategory= await prisma.productCategory.findUnique({
+        let productCategory= await prisma.productCategory.findFirst({
             where: {
                 id: id
             }
         });
-
         return productCategory;
     }
     catch(err:any){
@@ -98,7 +97,7 @@ export const getProductCategorybyName = async (name: string) => {
         if(!name) 
             throw new HttpException(400, 'Product Category name is required');
         
-        let productCategory= await prisma.productCategory.findUnique({
+        let productCategory= await prisma.productCategory.findFirst({
             where: {
                 name: name
             }

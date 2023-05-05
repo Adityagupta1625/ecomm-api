@@ -98,10 +98,9 @@ const router=express.Router();
 router.get('/', async (req:Request, res:Response) => {
     try{
         const results=await getProductCategoryAll();
-
         if(!results) return res.status(400).json({message:"No Product category found"});
 
-        else return res.send(200).json(results);
+        else return res.status(200).json(results);
 
     }
     catch(err:any){
@@ -112,13 +111,16 @@ router.get('/', async (req:Request, res:Response) => {
 router.get('/:id', async (req:Request, res:Response) => {
     try{
         const id:any=req.query.id;
+        console.log(id);
+        
         const results=await getProductCategorybyId(id);
 
         if(!results) return res.status(400).json({message:"Product category does not exist"});
 
-        else return res.send(200).json(results);
+        else return res.status(200).json(results);
     }
     catch(err:any){
+        console.log(err);
         res.status(err?.status || 500).json({message:"Error while fetching category"});
     }
 });
@@ -130,7 +132,7 @@ router.get('/:name', async (req:Request, res:Response) => {
 
         if(!results) return res.status(400).json({message:"Product category does not exist"});
 
-        else return res.send(200).json(results);
+        else return res.status(200).json(results);
     }
     catch(err:any){
         res.status(err?.status || 500).json({message:"Error while fetching categories"});

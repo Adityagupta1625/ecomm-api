@@ -37,6 +37,8 @@ const router = express.Router();
 router.post("/register-login", (req: Request, res: Response) => {
   try {
     let id = req.body?.id;
+    if (!id) return res.status(400).send("No id provided");
+
 
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
@@ -79,6 +81,7 @@ router.post("/register-login", (req: Request, res: Response) => {
           });
       })
       .catch((error) => {
+        console.log(error);
         res.status(401).send("UNAUTHORIZED REQUEST!");
       });
   } catch (err: any) {

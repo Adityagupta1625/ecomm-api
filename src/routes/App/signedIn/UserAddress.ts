@@ -46,13 +46,13 @@ const router = express.Router();
  *                       type: string
  *                    pincode:
  *                       type: string
- *                    mobile:       
+ *                    mobile:
  *                       type: string
  *                    telephone:
  *                        type: string
  *                    updatedAt:
- *                        type: string  
- * 
+ *                        type: string
+ *
  */
 
 /**
@@ -91,16 +91,15 @@ const router = express.Router();
  *                       type: string
  *                    pincode:
  *                       type: string
- *                    mobile:       
+ *                    mobile:
  *                       type: string
  *                    telephone:
  *                        type: string
  *                    updatedAt:
- *                        type: string  
- *                    
- * 
+ *                        type: string
+ *
+ *
  */
-
 
 /**
  * @swagger
@@ -124,8 +123,8 @@ const router = express.Router();
  *                 properties:
  *                   message:
  *                    type: string
- *                    
- * 
+ *
+ *
  */
 
 /**
@@ -156,13 +155,13 @@ const router = express.Router();
  *                       type: string
  *                    pincode:
  *                       type: string
- *                    mobile:       
+ *                    mobile:
  *                       type: string
  *                    telephone:
  *                        type: string
  *                    updatedAt:
- *                        type: string  
- *     
+ *                        type: string
+ *
  *     responses:
  *       200:
  *         content:
@@ -172,8 +171,8 @@ const router = express.Router();
  *               properties:
  *                message:
  *                  type: string
- *                             
- *              
+ *
+ *
  */
 
 /**
@@ -204,13 +203,13 @@ const router = express.Router();
  *                       type: string
  *                    pincode:
  *                       type: string
- *                    mobile:       
+ *                    mobile:
  *                       type: string
  *                    telephone:
  *                        type: string
  *                    updatedAt:
- *                        type: string  
- *     
+ *                        type: string
+ *
  *     responses:
  *       200:
  *         content:
@@ -220,10 +219,9 @@ const router = express.Router();
  *               properties:
  *                message:
  *                  type: string
- *                             
- *              
+ *
+ *
  */
-
 
 router.post("/", async (req: Request, res: Response) => {
   try {
@@ -263,30 +261,34 @@ router.delete("/", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/:id", async (req: Request, res: Response) => {
-  try {
-    const id: any = req.query.id;
-    const results = await getUserAddressbyId(id);
+router.get("/", async (req: Request, res: Response) => {
+  if (req.query.userId) {
+    try {
+      const userid: any = req.query.userId;
+      const results = await getUserAddressbyUserId(userid);
+      if (!results)
+        return res.status(400).json({ message: "Address not found" });
+      else return res.send(200).json(results);
+    } catch (err: any) {
+      res
+        .status(err?.status || 500)
+        .json({ message: "Error while fetching address" });
+    }
+  } 
+  
+  else if(req.query.id) {
+    try {
+      const id: any = req.query.id;
+      const results = await getUserAddressbyId(id);
 
-    if (!results) return res.status(400).json({ message: "Address not found" });
-    else return res.send(200).json(results);
-  } catch (err: any) {
-    res
-      .status(err?.status || 500)
-      .json({ message: "Error while fetching address" });
-  }
-});
-
-router.get("/:userId", async (req: Request, res: Response) => {
-  try {
-    const userid: any = req.query.userId;
-    const results = await getUserAddressbyUserId(userid);
-    if (!results) return res.status(400).json({ message: "Address not found" });
-    else return res.send(200).json(results);
-  } catch (err: any) {
-    res
-      .status(err?.status || 500)
-      .json({ message: "Error while fetching address" });
+      if (!results)
+        return res.status(400).json({ message: "Address not found" });
+      else return res.send(200).json(results);
+    } catch (err: any) {
+      res
+        .status(err?.status || 500)
+        .json({ message: "Error while fetching address" });
+    }
   }
 });
 

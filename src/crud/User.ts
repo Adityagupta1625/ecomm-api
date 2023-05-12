@@ -75,7 +75,7 @@ export const getUser = async (id: string) => {
   try {
     if (!id) throw new HttpException(400, "User ID is required");
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: {
         id: id,
       },

@@ -54,7 +54,7 @@ export const getProductbyId = async (id: string) => {
     if(!id) 
         throw new HttpException(400, 'Product id is required');
     try{
-        const product = await prisma.product.findUnique({
+        const product = await prisma.product.findFirst({
             where: {
                 id: id,
             },

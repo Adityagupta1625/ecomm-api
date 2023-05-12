@@ -99,7 +99,7 @@ export const getUserAddressbyId = async (id: string) => {
   try {
     if (!id) throw new HttpException(400, "User Address ID is required");
 
-    let userAddress = await prisma.userAddress.findUnique({
+    let userAddress = await prisma.userAddress.findFirst({
       where: {
         id: id,
       },
@@ -115,7 +115,7 @@ export const getUserAddressbyUserId = async (userId: string) => {
   try {
     if (!userId) throw new HttpException(400, "User ID is required");
 
-    let userAddress = await prisma.userAddress.findMany({
+    let userAddress = await prisma.userAddress.findFirst({
       where: {
         userId: userId,
       },

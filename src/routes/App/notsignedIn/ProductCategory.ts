@@ -95,48 +95,55 @@ const router=express.Router();
  *                              type: string
  */
 
+
 router.get('/', async (req:Request, res:Response) => {
-    try{
-        const results=await getProductCategoryAll();
-        if(!results) return res.status(400).json({message:"No Product category found"});
+    if(Object.keys(req.query).length===0){
 
-        else return res.status(200).json(results);
+        try{
+            const results=await getProductCategoryAll();
+            if(!results) return res.status(400).json({message:"No Product category found"});
+    
+            else return res.status(200).json(results);
+    
+        }
+        catch(err:any){
+            res.status(err?.status || 500).json({message:"Error while fetching categories"});
+        }
+    }
+
+    else if(req.query.id){
+        try{
+            const id:any=req.query.id;
+            
+            const results=await getProductCategorybyId(id);
+    
+            if(!results) return res.status(400).json({message:"Product category does not exist"});
+    
+            else return res.status(200).json(results);
+        }
+        catch(err:any){
+            console.log(err);
+            res.status(err?.status || 500).json({message:"Error while fetching category"});
+        }
+
 
     }
-    catch(err:any){
-        res.status(err?.status || 500).json({message:"Error while fetching categories"});
+
+    else if(req.query.name){
+        try{
+            const name:any=req.query.name;
+            const results=await getProductCategorybyName(name);
+    
+            if(!results) return res.status(400).json({message:"Product category does not exist"});
+    
+            else return res.status(200).json(results);
+        }
+        catch(err:any){
+            res.status(err?.status || 500).json({message:"Error while fetching categories"});
+        }
     }
 });
 
-router.get('/:id', async (req:Request, res:Response) => {
-    try{
-        const id:any=req.query.id;
-        console.log(id);
-        
-        const results=await getProductCategorybyId(id);
 
-        if(!results) return res.status(400).json({message:"Product category does not exist"});
-
-        else return res.status(200).json(results);
-    }
-    catch(err:any){
-        console.log(err);
-        res.status(err?.status || 500).json({message:"Error while fetching category"});
-    }
-});
-
-router.get('/:name', async (req:Request, res:Response) => {
-    try{
-        const name:any=req.query.name;
-        const results=await getProductCategorybyName(name);
-
-        if(!results) return res.status(400).json({message:"Product category does not exist"});
-
-        else return res.status(200).json(results);
-    }
-    catch(err:any){
-        res.status(err?.status || 500).json({message:"Error while fetching categories"});
-    }
-});
 
 export default router;

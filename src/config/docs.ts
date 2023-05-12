@@ -10,7 +10,13 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:8000'
+        url: 'http://localhost:8000',
+        description: 'Development server'
+
+      },
+      {
+        url:'https://savishi-api.onrender.com',
+        description: 'Production server'
       }
     ]
   },

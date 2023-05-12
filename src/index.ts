@@ -27,7 +27,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // without authentication of user
-app.use('/app/notsignedIn', Auth);
+app.use('/app/notsignedIn/Auth', Auth);
 app.use('/app/notsignedIn/Product', Product);
 app.use('/app/notsignedIn/ProductCategory', ProductCategory);
 

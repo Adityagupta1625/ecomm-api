@@ -5,7 +5,7 @@ firebase.initializeApp({
   credential: firebase.credential.cert({
     projectId: keys.firebase.projectId,
     clientEmail: keys.firebase.clientEmail,
-    privateKey: keys.firebase.privateKey.replace(/\\n/g, ""),
+    privateKey: keys.firebase.privateKey.replace(/\\n/g, "\n")
   }),
 });
 

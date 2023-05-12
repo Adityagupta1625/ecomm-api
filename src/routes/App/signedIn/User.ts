@@ -70,9 +70,6 @@ const router=express.Router();
  */
 
 
-
-
-
 router.get('/:id', async (req:Request, res:Response) => {
     try{
         let id:any=req.query?.id;

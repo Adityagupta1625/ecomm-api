@@ -51,14 +51,14 @@ router.post('/',async (req:Request,res:Response)=>{
             shipping: {
                 name: user?.name,
                 address: {
-                    line1: userAddress[0]?.address_line1,
-                    line2: userAddress[0]?.address_line2,
-                    postal_code: userAddress[0]?.pincode,
-                    city: userAddress[0]?.city,
-                    state: userAddress[0]?.state,
-                    country: userAddress[0]?.country,
-                    mobile: userAddress[0]?.mobile,
-                    tel: userAddress[0]?.telephone,
+                    line1: userAddress?.address_line1,
+                    line2: userAddress?.address_line2,
+                    postal_code: userAddress?.pincode,
+                    city: userAddress?.city,
+                    state: userAddress?.state,
+                    country: userAddress?.country,
+                    mobile: userAddress?.mobile,
+                    tel: userAddress?.telephone,
                 },
             },
             line_items: orderItems.map((item:any) => {

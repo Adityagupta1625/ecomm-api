@@ -37,10 +37,18 @@ export const createProduct = async (Product: Product) => {
 export const getProducts = async () => {
     try{
         const products = await prisma.product.findMany({
-            include: {
-                category: true,
-                discount: true,
-            }
+            select:{
+                
+                id:true,
+                name:true,
+                price:true,
+                description:true,
+                discount:true,
+                category:true,
+                updatedAt:true,
+                createdAt:true,
+
+            },
         });
         
         return products;
@@ -58,10 +66,18 @@ export const getProductbyId = async (id: string) => {
             where: {
                 id: id,
             },
-            include: {
-                category: true,
-                discount: true,
-            }
+            select:{
+                
+                id:true,
+                name:true,
+                price:true,
+                description:true,
+                discount:true,
+                category:true,
+                updatedAt:true,
+                createdAt:true,
+
+            },
         });
         return product;
     }
@@ -78,10 +94,18 @@ export const getProductbyCategory = async (categoryId: string) => {
             where: {
                 categoryId:categoryId,
             },
-            include: {
-                category: true,
-                discount: true,
-            }
+            select:{
+                discount:true,
+                category:true,
+                id:true,
+                name:true,
+                price:true,
+                description:true,
+                updatedAt:true,
+                createdAt:true,    
+            },
+            
+            
         });
         return product;
     }
@@ -104,8 +128,8 @@ export const updateProduct = async (Product: Product) => {
                 name: Product?.name.toLowerCase() || productDetail?.name,
                 price: Product?.price || productDetail?.price,
                 description: Product?.description || productDetail?.description,
-                categoryId: Product?.categoryId || productDetail?.categoryId,
-                discountId: Product?.discountId || productDetail?.discountId,
+                categoryId: Product?.categoryId || productDetail?.category?.id,
+                discountId: Product?.discountId || productDetail?.discount?.id,
                 updatedAt: new Date(),
             }
         });

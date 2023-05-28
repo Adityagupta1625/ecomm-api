@@ -1,7 +1,7 @@
 import prisma from "../../prisma/client";
 import HttpException from "../models/http-exception";
 import Cart from "../models/Cart";
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 export const createCart = async (Cart: Cart) => {
   try {
@@ -13,7 +13,7 @@ export const createCart = async (Cart: Cart) => {
 
     const cart = await prisma.cart.create({
       data: {
-        id: uuid.v4(),
+        id: uuidv4(),
         userId: Cart?.userId,
         total: Cart?.total || 0,
         updatedAt: new Date(),

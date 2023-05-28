@@ -1,7 +1,7 @@
 import prisma from "../../prisma/client";
 import HttpException from "../models/http-exception";
 import UserAddress from "../models/UserAddress";
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 export const createUserAddress = async (UserAddress: UserAddress) => {
   try {
@@ -22,7 +22,7 @@ export const createUserAddress = async (UserAddress: UserAddress) => {
 
     const userAddress = await prisma.userAddress.create({
       data: {
-        id: uuid.v4(),
+        id: uuidv4(),
         userId: UserAddress?.userId,
         address_line1: UserAddress?.address_line1,
         address_line2: UserAddress?.address_line2 || "",

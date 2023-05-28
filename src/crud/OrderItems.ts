@@ -2,7 +2,7 @@ import prisma from '../../prisma/client';
 import HttpException from '../models/http-exception';
 import OrderItems from '../models/OrderItems';
 import {getProductbyId} from './Product'
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createOrderItems = async (OrderItems: OrderItems) => {
     try{
@@ -18,7 +18,7 @@ export const createOrderItems = async (OrderItems: OrderItems) => {
 
         const orderItems = await prisma.orderItems.create({
             data: {
-                id: uuid.v4(),
+                id: uuidv4(),
                 orderId: OrderItems?.orderId,
                 productId: OrderItems?.productId,
                 quantity: OrderItems?.quantity || 1,

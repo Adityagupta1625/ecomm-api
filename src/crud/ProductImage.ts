@@ -1,7 +1,7 @@
 import prisma from '../../prisma/client';
 import HttpException from '../models/http-exception';
 import ProductImage from '../models/ProductImage';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createProductImage = async (ProductImage: ProductImage) => {
     try{
@@ -14,7 +14,7 @@ export const createProductImage = async (ProductImage: ProductImage) => {
         
         const productImage = await prisma.productImage.create({
             data: {
-                id: uuid.v4(),
+                id: uuidv4(),
                 productId: ProductImage?.productId,
                 image: ProductImage?.image,
                 updatedAt: new Date(),

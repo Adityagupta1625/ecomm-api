@@ -1,7 +1,7 @@
 import prisma from '../../prisma/client';
 import HttpException from '../models/http-exception';
 import ProductCategory from '../models/ProductCategory';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createProductCategory = async (ProductCategory: ProductCategory) => {
     try{
@@ -13,7 +13,7 @@ export const createProductCategory = async (ProductCategory: ProductCategory) =>
         
         const productCategory = await prisma.productCategory.create({
             data: {
-                id: uuid.v4(),
+                id: uuidv4(),
                 name: ProductCategory?.name.toLowerCase(),
                 description: ProductCategory?.description || "",
                 updatedAt: new Date(),

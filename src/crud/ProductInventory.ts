@@ -1,7 +1,7 @@
 import prisma from '../../prisma/client';
 import HttpException from '../models/http-exception';
 import ProductInventory from '../models/ProductInventory';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createProductInventory = async (ProductInventory: ProductInventory) => {
     try{
@@ -19,7 +19,7 @@ export const createProductInventory = async (ProductInventory: ProductInventory)
         
         const productInventory = await prisma.productInventory.create({
             data: {
-                id: uuid.v4(),
+                id: uuidv4(),
                 quantity: ProductInventory?.quantity || 0,
                 productId: ProductInventory?.productId,
                 updatedAt: new Date(),

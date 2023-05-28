@@ -1,7 +1,8 @@
 import prisma from '../../prisma/client';
 import HttpException from '../models/http-exception';
 import OrderDetails from '../models/OrderDetails';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const createOrderDetails = async (OrderDetails: OrderDetails) => {
     try{
@@ -11,7 +12,7 @@ export const createOrderDetails = async (OrderDetails: OrderDetails) => {
         
         const orderDetails = await prisma.orderDetails.create({
             data: {
-                id: uuid.v4(),
+                id: uuidv4(),
                 userId: OrderDetails?.userId,
                 total: OrderDetails?.total || 0,
                 paymentId: OrderDetails?.paymentId || "",

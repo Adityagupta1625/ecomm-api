@@ -2,7 +2,8 @@ import prisma from "../../prisma/client";
 import HttpException from "../models/http-exception";
 import CartItem from "../models/CartItem";
 import { getProductbyId } from "./Product";
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const createCartItem = async (CartItem: CartItem) => {
   try {
@@ -19,7 +20,7 @@ export const createCartItem = async (CartItem: CartItem) => {
 
     const cartItem = await prisma.cartItem.create({
       data: {
-        id: uuid.v4(),
+        id: uuidv4(),
         cartId: CartItem?.cartId,
         productId: CartItem?.productId,
         quantity: CartItem?.quantity || 1,

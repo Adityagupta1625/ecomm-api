@@ -1,11 +1,13 @@
 import firebase from "firebase-admin";
 import keys from "../../keys";
 
+
+
 firebase.initializeApp({
   credential: firebase.credential.cert({
-    projectId: keys.firebase.projectId,
-    clientEmail: keys.firebase.clientEmail,
-    privateKey: keys.firebase.privateKey.replace(/\\n/g, "\n")
+    projectId: "savishi-ecomm",
+    clientEmail:"firebase-adminsdk-yzaim@savishi-ecomm.iam.gserviceaccount.com",
+    privateKey:  "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC4YiBdNBchatDM\n6o1LJPQfUUuf8Q/vHxLPugVg8XQLebezbfAFzj/qwke5lk2/5AqfLoug8vHE0e/A\nbSEe48SbYGfDaYGShEN4KqVTKYhD3fy93mgRv3dBB9QyhI/BxugFAQsbcd1vkaJp\n8PdscWLMEXMZRwIKqC8To2jqyJSMNSwvqYpDdNriIsdsTRh9N+UGb9Hy3dQb9zls\ndM71IEcEssnVUeF5xdpP5Gu4bxOAUIB7J2IspUJVFyjjrW5NwmjlIDRETIlAcCcp\nXabwpNq9CD1t4es9+Mekre/YeEelEARuBniXeuL6oVlf+sYHPsGR6q4mhdEfxYlr\niVeHksulAgMBAAECggEAQq8KcWrjaqyM829oxmKI/8KRDTlLv/mG/iWSyGrKw1O0\nAmqiQhdDuo2lDxOy7tF0nflhekYi9kHO6dMOBXPuqRsGq/++YtT+6bjSre75X0Ir\npCeJj9GlOZmxPsv+ieB8DUNBVx2pLi6HhLUnZsrjJlaxP9UUgfIthHa2/SKpxsLd\nJB0H6XnaxwaksNh1Hi0p3h1dA2R0JHC8H609UJk4pnXnI3AHqkho9G1lw7k+L8YD\nZJtqkapB3OhAJYTWPunJ0BQ/JkFE0FnMS+Pwk5Vct6td4GD2lpZNNZa6u5LiwuDR\nrFsZ/G2pTHbY/SPgVuRhgY/cA2bbTQdfActsTxz/CQKBgQD+npIR1QeuRhOsz5MM\n1amxsiwiN9YL3iwT3Lngpzqxy7S3DMWZrthBTEJZo9fygPzepGQ6SCzzmFAewjOx\nzCKOUAK/8COQ8lFibMvjuhmAdHyfCqi06T2g+kNx/sQ9i13DbQJ5PGMrzqEfF+Nq\nWRpsnYZj/32ehMLTbCRjALEibwKBgQC5YhAwwH5HqrYLN0B47g9ViD78mjOo8+KZ\nlDVmpfXmcqmjIdCHiRX1KEmAj21wWboec5o600msxyqnkLwIuCV5I6m+Q/RQvvtQ\nOJ/iilvpk7I/R1kxlV/5G/RT4BRxjYG7Gte7chSbm2B9dmrPf90V7ARnqw0jCDL9\ncWcXtcOtKwKBgQDl3gaFLsu2W/GbS/K33ZVLpU0Ov1XwdO1aKSVuWcs1hHBr6Y3j\nRuRZXx1vi+mDN0wTPFp3+30JlfKPMkg1NdPkovs4iPWy//DVaN9RgktPmtp/QsI4\nQXGwCQAmxBgqb82AhsN67Dej7vGq/ogDFNo0QKp5UMj5+WViNflLn+5K5QKBgH4Q\nF15vp+/oQH8EBY22pSrOybZQzgx4PIGfbWjuNneNRZovZnSkXhAmY0VPQ2aBPbVz\ne0/BWnppvbHRFG0BfEoSXF2MLFm0ZYW528/bsoD19OJfDGJRZ8AoqE9ZM828Ipov\nuMA45ZajZEws+Jk+JAPCSYSNpxNJghMiyK4w5m2dAoGANhw3kVqjJMjOZAYK7JTU\ndVTpQQwsmeDHrgzLq5zgASSmtz705rw+gaxdqIOptBmQFsI4aC6dFOMLJUsqSgwy\nNTKcaFz44xxPaB5k2gYLYdPBZg4VATMXXD8q2nwigENtD4ON/JaaxiSsv44UDBjj\nHZxLEDdbBHyp5Z0KLf2VBCo=\n-----END PRIVATE KEY-----\n"
   }),
 });
 
